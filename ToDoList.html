@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="Icon" href="https://cdn-icons-png.flaticon.com/512/4697/4697260.png">
+
+
+    <style type="text/css">
+        *{
+    padding: 0px;
+    margin: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #E0EEEE;
+            display: flex;
+            justify-content: center;
+            font-family: cursive !important;
+        }
+        .todo-app{
+            width: 450px;
+            height: 500px;
+            background-color: white;
+            margin-top: 90px;
+            padding: 30px;
+            border-radius: 50px;
+            position: relative;
+            border-style: double;
+        }
+        .todo-app h1{
+            color: red;
+            font-size: 25px;
+            margin-left: 50px;
+        }
+        .todo-icon{
+            height: 70px;
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            border-radius: 20px;
+        }
+        .container{
+            position: relative;
+            top: -20px;
+        }
+        .fields{
+            height: 45px;
+            width: 340px;
+            display: flex;
+            align-items: center;
+            margin-top: 50px;
+            border: 2px solid black;
+            border-radius: 20px;
+            position: relative;
+            
+        }
+        .fields input{
+            width: 337px;
+            height: 20px;
+            outline: none;
+            border: none;
+            border-radius: 20px;
+            background-color:ghostwhite;
+            padding: 20px;
+            font-size: 15px;
+        }
+        .fields button{
+            width: 25%;
+            height: 40px;
+            position: absolute;
+            top: 60px;
+            right: 40%;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            background-color:#0767FF ;
+            font-weight: bolder;
+            font-style: oblique;
+        }
+        .task-list{
+            margin-top: 20px;
+            padding-left: 25px;
+        }
+        .task-list li{
+            padding: 10px 5px 5px;
+            font-family: sans-serif;
+            font-weight: bolder;
+            position: relative;
+        }
+        .task-list li::before{
+            content: "";
+            background-image: url("https://www.freeiconspng.com/uploads/circle-icon-0.png");
+            height: 15px;
+            width: 15px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: -20px;
+            top: 12px;
+        }
+        .task-list li.checked{
+            color: grey;
+            text-decoration: line-through;
+        }
+        .task-list li.checked::before{
+            background-image: url("https://png.pngtree.com/png-clipart/20230813/original/pngtree-logoready-vector-icon-for-todo-list-or-checklist-vector-png-image_10341106.png");
+        }
+            </style>
+        </head>
+
+        <body>
+            <div class="todo-app">
+                <img src="https://cdn-icons-png.flaticon.com/512/8019/8019152.png"
+                    class="todo-icon">
+                <h1 align="center">TO-DO LIST</h1>
+                <div class="container">
+                    <div class="fields">
+                        <form>
+                            <input type="text" id="task" placeholder="Add your task" autocomplete="off" autofocus>
+                            <button onclick="addTask()">ADD</button>
+                        </form>
+                    </div>
+                    <div class="my-tasks">
+                        <ul class="task-list" type="none">
+                            <!-- <li class="checked">task1</li>
+                        <li class="checked">task2</li>
+                        <li class="checked">task3</li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+          <script>
+    let task = document.getElementById("task");
+    let addButton = document.querySelector(".fields button");
+    let taskList = document.querySelector(".task-list");
+
+    addButton.addEventListener("click", addTask);
+
+    function addTask(event) {
+        event.preventDefault(); // Prevent form submission
+
+        let newTask = task.value.trim(); // Trim whitespace
+
+        if (newTask !== "") {
+            let li = document.createElement("li");
+            li.innerText = newTask;
+            let span = document.createElement("span");
+            span.innerHTML = "&#xd7;";
+            span.classList.add("close"); // Adding close class to the span
+            li.appendChild(span);
+            taskList.appendChild(li);
+        } else {
+            alert("Enter a task");
+        }
+        saveData();
+        task.value = ""; // Clear input field after adding task
+    }
+
+    taskList.addEventListener("click", function(event) {
+        if (event.target.tagName === "LI") {
+            event.target.classList.toggle("checked");
+        } else if (event.target.classList.contains("close")) {
+            event.target.parentElement.remove();
+        }
+        saveData();
+    });
+
+    function saveData() {
+        localStorage.setItem("taskListHTML", taskList.innerHTML);
+    }
+
+    function fetchData() {
+        let taskListHTML = localStorage.getItem("taskListHTML");
+        if (taskListHTML) {
+            taskList.innerHTML = taskListHTML;
+        }
+    }
+
+    fetchData();
+</script>
+        </body>
+
+        </html>
